@@ -861,6 +861,7 @@ const EmailManagementPage: React.FC = () => {
     message: string;
   } | null>(null);
 
+  const [csvFileName, setCsvFileName] = useState('');
   const [csvData, setCsvData] = useState<EmailData[]>([]);
   const [emailSteps, setEmailSteps] = useState<EmailStep[]>([{
     subject: '',
@@ -965,6 +966,7 @@ const EmailManagementPage: React.FC = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    setCsvFileName(file.name);
     Papa.parse(file, {
       complete: (results) => {
         const data = results.data as string[][];
@@ -1124,9 +1126,29 @@ const EmailManagementPage: React.FC = () => {
 
             <Paper sx={{ p: 2, mb: 3 }}>
               <Typography variant="h6" gutterBottom>Upload Recipients CSV</Typography>
-              <input accept=".csv" type="file" onChange={handleFileUpload} style={{ marginBottom: '16px' }} />
-              <Typography variant="body2" color="textSecondary">CSV should contain columns: email, name (optional)</Typography>
+
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                <Button variant="outlined" component="label">
+                  Upload CSV
+                  <input
+                    type="file"
+                    accept=".csv"
+                    hidden
+                    onChange={handleFileUpload}
+                  />
+                </Button>
+                {csvFileName && (
+                  <Typography variant="body2" color="textSecondary" sx={{ fontStyle: 'italic' }}>
+                    {csvFileName}
+                  </Typography>
+                )}
+              </Box>
+
+              <Typography variant="body2" color="textSecondary">
+                CSV should contain columns: <strong>email</strong>, <strong>name</strong> (optional)
+              </Typography>
             </Paper>
+
 
             {emailSteps.map((step, index) => (
               <Grid container spacing={2} key={index} sx={{ mb: 2 }}>
