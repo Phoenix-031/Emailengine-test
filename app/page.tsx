@@ -923,31 +923,31 @@ const EmailManagementPage: React.FC = () => {
     setAccountAlert(null);
 
     try {
-      const response = await fetch('/api/emailengine/create-account', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ credential, provider: credential.provider }),
-      });
+      // const response = await fetch('/api/emailengine/create-account', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ credential, provider: credential.provider }),
+      // });
 
-      const result = await response.json();
+      // const result = await response.json();
 
-      if (result.success) {
+      // if (result.success) {
         const existing = JSON.parse(localStorage.getItem('senderEmails') || '[]');
         if (!existing.includes(credential.emailId)) {
           existing.push(credential.emailId);
           localStorage.setItem('senderEmails', JSON.stringify(existing));
-        }
+        // }
 
-        if (result.redirectUrl) {
-          window.open(result.redirectUrl, '_blank');
-          setAccountAlert({ type: 'success', message: 'Please complete OAuth in new tab' });
-        } else {
-          setAccountAlert({ type: 'success', message: 'Email account created successfully!' });
-        }
+        // if (result.redirectUrl) {
+        //   window.open(result.redirectUrl, '_blank');
+        //   setAccountAlert({ type: 'success', message: 'Please complete OAuth in new tab' });
+        // } else {
+        //   setAccountAlert({ type: 'success', message: 'Email account created successfully!' });
+        // }
 
         setCredential({ emailId: '', password: '', provider: PROVIDER_TYPES.GMAIL });
       } else {
-        setAccountAlert({ type: 'error', message: result.error || 'Failed to create account' });
+        // setAccountAlert({ type: 'error', message: result.error || 'Failed to create account' });
       }
     } catch (error) {
       console.log("Error", error)
